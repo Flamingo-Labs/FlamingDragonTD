@@ -5,9 +5,10 @@ public class EnemyScript : MonoBehaviour
 {
     public TowerScript tower;
 
-
     Vector3 origin;
     int counter = 0;
+    float health = 3;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,9 +36,9 @@ public class EnemyScript : MonoBehaviour
     {
         Vector3 loc = transform.position;
         // calculate new forces
-        float dx = -1 * loc.z;
-        float dy = 2 - loc.y;
-        float dz = loc.x;
+        float dx = 5;
+        float dy = 0;
+        float dz = 0; // 10 * math.sin((50 / math.PI) * loc.x);
         Vector3 force = new Vector3(dx, dy, dz);
         //float constant = 1 / force.magnitude;
         //force += -1 * constant *  (origin + loc);
@@ -47,4 +48,21 @@ public class EnemyScript : MonoBehaviour
         transform.position += force;
     }
 
+    void takeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<BulletScript>() is not null)
+        {
+            takeDamage(collision.gameObject.GetComponent<BulletScript>().damage);
+            Destroy(collision.gameObject);
+        }
+    }
 }

@@ -4,6 +4,8 @@ public class BulletScript : MonoBehaviour
 {
     public int damage;
 
+    Vector3 velocity;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,12 +18,4 @@ public class BulletScript : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.comp == "Enemy")
-        {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
-        }
-    }
 }
