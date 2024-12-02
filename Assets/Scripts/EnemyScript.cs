@@ -1,11 +1,17 @@
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
     public TowerScript tower;
+    public GameObject debugVector;
+
 
     Vector3 origin;
+    Vector3 lastPosition;
+    Vector3 velocity;
+    Quaternion targetRotation;
     int counter = 0;
     float health = 3;
 
@@ -21,8 +27,14 @@ public class EnemyScript : MonoBehaviour
         //transform.position = circle(origin, 5, 1f) + 2 * Vector3.up;
         //transform.rotation = Quaternion.LookRotation(origin - transform.position);
         move();
+        velocity = (transform.position - lastPosition).normalized;
+
+        targetRotation = Quaternion.LookRotation(velocity) * Quaternion.Euler(90, 0, 0);
+        debugVector.transform.rotation = Quaternion.Slerp(debugVector.transform.rotation, targetRotation, Time.deltaTime * 50f);
+        debugVector.transform.position = transform.position + 0.9f * velocity;
 
         counter++;
+        lastPosition = transform.position;
     }
 
     Vector3 circle(Vector3 origin, float radius, float angularVelocity)

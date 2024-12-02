@@ -3,6 +3,7 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     public int damage;
+    int counter;
 
     Vector3 velocity;
 
@@ -12,10 +13,13 @@ public class BulletScript : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        counter++;
+        if (counter >= 500)
+        {
+            Destroy(gameObject);
+        }
     }
 
 }
